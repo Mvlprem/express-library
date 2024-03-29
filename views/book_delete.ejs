@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Navigation Layout-->
+        <%- include('layout') -%>
+
+        <div class="col-sm-10 mt-3">
+          <h1><%= title %>: <%= book.title %></h1>
+          <p>
+            <strong>Author: </strong>
+            <a href="<%= book.author.url %>"><%= book.author.name %></a>
+          </p>
+          <p><strong>Summary: </strong><%= book.summary %></p>
+          <p><strong>ISBN: </strong><%= book.isbn %></p>
+          <p>
+            <strong>Genre:</strong>
+            <% book.genre.forEach((val, index) => { %>
+            <a href="<%= val.url %>"><%= val.name %></a>
+            <% if(index < book.genre.length - 1) { %> ,&nbsp; <% } %> <% }) %>
+          </p>
+
+          <hr />
+
+          <% if(book_instances.length) { %>
+          <p>
+            <strong>
+              Delete the following copies before attempting to delete this Book.
+            </strong>
+          </p>
+
+          <div class="ms-4 mt-4">
+            <h4>Copies</h4>
+
+            <% for(book_copy of book_instances) { %>
+            <hr />
+            <% if(book_copy.status=='Available') { %>
+            <p class="text-success"><%= book_copy.status %></p>
+            <% } else if(book_copy.status=='Maintenance') { %>
+            <p class="text-danger"><%= book_copy.status %></p>
+            <% } else { %>
+            <p class="text-warning"><%= book_copy.status %></p>
+            <% } %>
+
+            <p><strong>Imprint: </strong><%= book_copy.imprint %></p>
+            <% if(book_copy.status!='Available') { %>
+            <p><strong>Due back: </strong><%= book_copy.due_back %></p>
+            <% } %>
+            <p>
+              <strong>ID: </strong>
+              <a href="<%= book_copy.url %>"><%= book_copy._id %></a>
+            </p>
+            <% } %>
+          </div>
+
+          <% } else { %>
+          <p>Do you really want to delete this Book?</p>
+
+          <form method="POST">
+            <div class="form-group">
+              <input
+                type="hidden"
+                id="id"
+                name="id"
+                class="form-control"
+                value="<%= book._id  %>"
+              />
+            </div>
+
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

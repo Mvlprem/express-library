@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Navigation Layout-->
+        <%- include('layout') -%>
+
+        <div class="col-sm-10 mt-3">
+          <h1><%= title %></h1>
+
+          <form method="POST">
+            <div class="form-group">
+              <label for="title">Title:</label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                class="form-control"
+                placeholder="Name of book"
+                required
+                value="<%= locals.book === undefined ? '' : book.title  %>"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="author">Author:</label>
+              <select id="author" name="author" required class="form-control">
+                <option value="">--Please select an author--</option>
+
+                <% for(author of locals.authors){if(locals.book){%>
+                <%if(author._id.toString()===book.author._id.toString()){%>
+                <option selected value="<%= author._id%>">
+                  <%= author.name %>
+                </option>
+                <% } else { %>
+                <option value="<%= author._id %>"><%= author.name %></option>
+                <% } } else { %>
+                <option value="<%= author._id %>"><%= author.name %></option>
+                <% } } %>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="summary">Summary:</label>
+              <textarea
+                name="summary"
+                id="summary"
+                required
+                rows="4"
+                class="form-control"
+                placeholder="summary"
+              >
+              <%= locals.book === undefined ? '' : book.summary %>
+            </textarea
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="isbn">ISBN:</label>
+              <input
+                id="isbn"
+                name="isbn"
+                type="text"
+                required
+                placeholder="ISBN13"
+                class="form-control"
+                value="<%= locals.book === undefined ? '' : book.isbn  %>"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Genre:</label>
+
+              <div>
+                <% for(genre of locals.genres){ %>
+                <div class="d-inline ps-3">
+                  <% if(genre.checked) { %>
+                  <input
+                    checked
+                    type="checkbox"
+                    name="genre"
+                    id="<%= genre._id %>"
+                    value="<%= genre._id %>"
+                    class="checkbox-input"
+                  />
+                  <% } else { %>
+                  <input
+                    type="checkbox"
+                    name="genre"
+                    id="<%= genre._id %>"
+                    value="<%= genre._id %>"
+                    class="checkbox-input"
+                  />
+                  <% } %>
+
+                  <label for="<%= genre._id %>">&nbsp; <%= genre.name %></label>
+                </div>
+                <% } %>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+          </form>
+
+          <% if (locals.errors) { %>
+          <ul class="mt-3">
+            <% for(error of errors) { %>
+            <li><%= error.msg %></li>
+            <% } %>
+          </ul>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
