@@ -2,6 +2,8 @@
 
 This web application creates an online catalog for a library, written in Node/Express.
 
+### Demo : [Library](https://noble-fishy-conga.glitch.me)
+
 ### Quick Start
 
 To get this project up and running locally on your computer:
@@ -28,7 +30,7 @@ To get this project up and running locally on your computer:
 
 > **Note:** The library uses a MongoDB database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). You should use a different database for your own code.
 
-   ```js
-    // .env
-    MONGODB_URI="insert_your_database_url_here"
-   ```
+```js
+// .env
+MONGODB_URI = 'insert_your_database_url_here'
+```
